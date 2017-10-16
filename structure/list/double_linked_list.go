@@ -1,6 +1,7 @@
-package structure
+package list
 
 import (
+	"fmt"
 	"reflect"
 
 	"github.com/sipt/algorithm/util"
@@ -14,6 +15,7 @@ type IDoubleCell interface {
 	SetNext(IDoubleCell)
 	Prev() IDoubleCell
 	SetPrev(IDoubleCell)
+	Remove()
 }
 
 // IDoubleLinkedList 双链表接口
@@ -23,6 +25,8 @@ type IDoubleLinkedList interface {
 	Clear()
 	Head() IDoubleCell
 	Tail() IDoubleCell
+	PopTail() IDoubleCell
+	PopHead() IDoubleCell
 }
 
 //NewDoubleCell 创建双链表单元
@@ -80,6 +84,18 @@ func (d *DoubleCell) SetPrev(prev IDoubleCell) {
 	}
 }
 
+//Remove remove current
+func (d *DoubleCell) Remove() {
+	if !util.IsNil(d.prev) {
+		d.prev.SetNext(d.next)
+	}
+	if !util.IsNil(d.next) {
+		d.next.SetPrev(d.prev)
+	}
+	d.prev = nil
+	d.next = nil
+}
+
 //DoubleLinkedList 双链表
 type DoubleLinkedList struct {
 	head, tail IDoubleCell
@@ -88,13 +104,17 @@ type DoubleLinkedList struct {
 
 //Append 追加元素
 func (d *DoubleLinkedList) Append(data ...interface{}) {
-	for _, cell := range data {
+	var cell IDoubleCell
+	for _, v := range data {
 		if util.IsNil(d.tail) {
-			d.head = d.newCell(cell)
+			d.head = d.newCell(v)
 			d.tail = d.head
 		} else {
-			d.tail.SetNext(d.newCell(cell))
+			cell = d.newCell(v)
+			d.tail.SetNext(cell)
+			cell.SetPrev(d.tail)
 			d.tail = d.tail.Next()
+
 		}
 	}
 }
@@ -104,14 +124,12 @@ func (d *DoubleLinkedList) Range(f func(IDoubleCell) (breaked, removed bool)) {
 	for cursor := d.head; reflect.ValueOf(cursor).IsNil(); cursor = cursor.Next() {
 		breaked, removed := f(cursor)
 		if removed {
-			if util.IsNil(d.tail.Prev()) {
+			if util.IsNil(cursor.Prev()) {
 				d.Clear()
 			} else {
-				d.tail.Prev().SetNext(d.tail.Next())
-				if util.IsNil(d.tail.Next()) {
+				cursor.Remove()
+				if util.IsNil(cursor.Next()) {
 					d.tail = d.tail.Prev()
-				} else {
-					d.tail = d.tail.Next()
 				}
 			}
 		}
@@ -134,4 +152,26 @@ func (d *DoubleLinkedList) Head() IDoubleCell {
 //Tail 最后一个元素
 func (d *DoubleLinkedList) Tail() IDoubleCell {
 	return d.tail
+}
+
+//PopTail pop最后一个元素
+func (d *DoubleLinkedList) PopTail() IDoubleCell {
+	cell := d.tail
+	if util.IsNil(cell) {
+		return nil
+	}
+	fmt.Println(d.tail)
+	fmt.Println(cell.Prev())
+	d.tail = cell.Prev()
+	cell.Remove()
+	fmt.Println(cell.Prev())
+	return cell
+}
+
+//PopHead pop头元素
+func (d *DoubleLinkedList) PopHead() IDoubleCell {
+	cell := d.head
+	d.head = cell.Next()
+	cell.Remove()
+	return cell
 }

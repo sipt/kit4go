@@ -1,21 +1,22 @@
-package structure_test
+package list_test
 
 import (
 	"testing"
 
-	"github.com/sipt/algorithm/structure"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/sipt/algorithm/structure/list"
 )
 
-func TestDoubleLinedList(t *testing.T) {
+func TestSinglyLinedList(t *testing.T) {
 	var testData = []int{1, 2, 3, 4, 7}
 	var testData1 = []int{2, 3, 4, 7}
 	var index = 0
-	list := structure.NewDoubleLinkedList(structure.NewDoubleCell)
+	linkedList := list.NewSinglyLinkedList(list.NewSinglyCell)
 	for _, cell := range testData {
-		list.Append(cell)
+		linkedList.Append(cell)
 	}
-	list.Range(func(cell structure.IDoubleCell) (bool, bool) {
+	linkedList.Range(func(cell list.ISinglyCell) (bool, bool) {
 		data := cell.Data()
 		if index == 3 {
 			return false, true // test break
@@ -28,7 +29,7 @@ func TestDoubleLinedList(t *testing.T) {
 		return false, false
 	})
 	index = 0
-	list.Range(func(cell structure.IDoubleCell) (bool, bool) {
+	linkedList.Range(func(cell list.ISinglyCell) (bool, bool) {
 		assert.Equal(t, cell.Data(), testData1[index])
 		index++
 		return false, false

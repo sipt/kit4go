@@ -1,4 +1,4 @@
-package structure
+package list
 
 //ISinglyCell 单链表单元interface
 type ISinglyCell interface {
