@@ -8,8 +8,8 @@ import (
 )
 
 func TestGcd(t *testing.T) {
-	assert.Equal(t, math.Gcd(100, 1), 1)
-	assert.Equal(t, math.Gcd(100, 2), 2)
-	assert.Equal(t, math.Gcd(100, 50), 50)
-	assert.Equal(t, math.Gcd(100, 45), 5)
+	assert.Equal(t, math.Gcd(1000000, 1), 1)
+	assert.Equal(t, math.Gcd(1000000, 2), 2)
+	assert.Equal(t, math.Gcd(1000000, 50), 50)
+	assert.Equal(t, math.Gcd(1000000, 45), 5)
 }
