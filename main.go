@@ -2,16 +2,10 @@ package main
 
 import (
 	"fmt"
-	// "strings"
 )
 
 func main() {
-	str1 := "acacacacacabacacabacacacababab"
-	str2 := "acacabacacabacacac"
-	fmt.Println(IndexOf(str1, str2))
 }
-
-
 
 func test1() {
 	arr := []int{1, 2, 3, 4, 5}
