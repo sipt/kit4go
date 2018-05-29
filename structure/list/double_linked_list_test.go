@@ -34,3 +34,17 @@ func TestDoubleLinedList(t *testing.T) {
 		return false, false
 	})
 }
+
+func TestDoubleLinkedList_PopTail(t *testing.T) {
+	var testData = []int{1, 2, 3, 4, 5}
+	linkedList := list.NewDoubleLinkedList(list.NewDoubleCell)
+	for _, cell := range testData {
+		linkedList.Append(cell)
+	}
+	for i := 0; i < len(testData); i++ {
+		linkedList.PopTail()
+	}
+	if !linkedList.IsEmpty() {
+		t.Errorf("is not empty!")
+	}
+}

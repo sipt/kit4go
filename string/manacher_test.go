@@ -5,9 +5,16 @@ import (
 )
 
 func TestManacher(t *testing.T) {
-	str := "abba"
+	str := "ababababacdea"
 	maxLen := Manacher(str)
-	answer := 4
+	answer := 9
+	if maxLen != answer {
+		t.Errorf("str:[%s] reply:[%d], answer:[%d]", str, maxLen, answer)
+	}
+
+	str = "abba"
+	maxLen = Manacher(str)
+	answer = 4
 	if maxLen != answer {
 		t.Errorf("str:[%s] reply:[%d], answer:[%d]", str, maxLen, answer)
 	}

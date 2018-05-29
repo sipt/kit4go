@@ -1,10 +1,8 @@
 package list
 
 import (
-	"fmt"
-	"reflect"
-
 	"github.com/sipt/algorithm/util"
+	"fmt"
 )
 
 // IDoubleCell 双链表单元接口
@@ -27,6 +25,8 @@ type IDoubleLinkedList interface {
 	Tail() IDoubleCell
 	PopTail() IDoubleCell
 	PopHead() IDoubleCell
+	Print()
+	IsEmpty() bool
 }
 
 //NewDoubleCell 创建双链表单元
@@ -121,7 +121,7 @@ func (d *DoubleLinkedList) Append(data ...interface{}) {
 
 //Range 遍历
 func (d *DoubleLinkedList) Range(f func(IDoubleCell) (breaked, removed bool)) {
-	for cursor := d.head; reflect.ValueOf(cursor).IsNil(); cursor = cursor.Next() {
+	for cursor := d.head; !util.IsNil(cursor); cursor = cursor.Next() {
 		breaked, removed := f(cursor)
 		if removed {
 			if util.IsNil(cursor.Prev()) {
@@ -160,11 +160,11 @@ func (d *DoubleLinkedList) PopTail() IDoubleCell {
 	if util.IsNil(cell) {
 		return nil
 	}
-	fmt.Println(d.tail)
-	fmt.Println(cell.Prev())
 	d.tail = cell.Prev()
+	if cell == d.head {
+		d.head = d.tail
+	}
 	cell.Remove()
-	fmt.Println(cell.Prev())
 	return cell
 }
 
@@ -174,4 +174,18 @@ func (d *DoubleLinkedList) PopHead() IDoubleCell {
 	d.head = cell.Next()
 	cell.Remove()
 	return cell
+}
+
+//IsEmpty
+func (d *DoubleLinkedList) IsEmpty() bool {
+	return util.IsNil(d.head)
+}
+
+func (d *DoubleLinkedList) Print() {
+	fmt.Print("[")
+	d.Range(func(cell IDoubleCell) (breaked, removed bool) {
+		fmt.Printf("%v ", cell.Data())
+		return false, false
+	})
+	fmt.Print("]\n")
 }

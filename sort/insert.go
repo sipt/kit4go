@@ -1,8 +1,9 @@
 package sort
 
 func InsertSort(arr []interface{}, compare func(x, y interface{}) bool) {
+	var temp interface{}
 	for i, j := 1, 0; i < len(arr); i++ {
-		temp := arr[i]
+		temp = arr[i]
 		for j = i; j > 0 && !compare(arr[j-1], temp); j-- {
 			arr[j] = arr[j-1]
 		}

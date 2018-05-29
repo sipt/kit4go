@@ -9,6 +9,8 @@ import (
 type IStack interface {
 	Pop() interface{}
 	Push(interface{})
+	IsEmpty() bool
+	Print()
 	Clear()
 }
 
@@ -41,4 +43,13 @@ func (s *Stack) Push(v interface{}) {
 //Clear clear
 func (s *Stack) Clear() {
 	s.linkedList.Clear()
+}
+
+//IsEmpty
+func (s *Stack) IsEmpty() bool {
+	return s.linkedList.IsEmpty()
+}
+
+func (s *Stack) Print() {
+	s.linkedList.Print()
 }
